@@ -5,6 +5,16 @@ import (
 )
 
 func TestSpaces(t *testing.T) {
-	s := Space{}
+	s := Empty{}
+	r := Rock{}
 	s.Act()
+	// space does not block
+	if s.React(r) {
+		t.Fail()
+	}
+	// rock blocks
+	if ! r.React(s) {
+		t.Fail()
+	}
 }
+
