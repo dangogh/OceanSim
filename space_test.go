@@ -2,36 +2,30 @@ package oceansim
 
 import (
 	"testing"
+	"fmt"
 )
 
-func TestSpaces(t *testing.T) {
-	s0,s1 := Empty{}, Empty{}
-	r0,r1 := Rock{}, Rock{}
-
-	////////////////////
-	// Empty Space
-	s0.Act()
-	blocks, reacts := s0.React(s1)
-
-	// does not block
-	if blocks {
-		t.Fail()
-	}
-	// does not react
-	if reacts {
-		t.Fail()
-	}
-
-	////////////////////
-	// Rock
-	blocks, reacts = r0.React(r1)
-	// blocks
-	if ! blocks {
-		t.Fail()
-	}
-	// does not react
-	if reacts {
-		t.Fail()
+var testDebug = false
+func printDebug(f string, x... interface {}) {
+	if testDebug {
+		fmt.Printf(f, x...)
 	}
 }
 
+func TestSpaces(t *testing.T) {
+	var objs = [...]Space{
+		Plankton{},
+		Empty{},
+		Rock{},
+		Fish{},
+		Shark{} }
+	for ii, obj0 := range objs {
+		obj0.Act()
+		printDebug("Testing %v::React\n", obj0)
+		for jj, obj1 := range objs {
+			printDebug("%v(%v).Reacts(%v(%v)) ?\n", obj0, ii, obj1, jj)
+			blocks, reacts := obj0.React(obj1)
+			printDebug("   %v, %v\n", blocks, reacts)
+		}
+	}
+}
